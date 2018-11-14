@@ -1,18 +1,38 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+   <div>
+    <!-- <Navbar class="block sm:hidden" @menu="() => this.show = !this.show"/> -->
+    <div class="flex mx-1 sm:mx-20">
+      <transition
+        name="fade"
+        mode="out-in">
+        <router-view/>
+      </transition>
+    </div>
+  <!-- <Footer /> -->
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
-  name: 'home',
+  name: 'contact-list',
   components: {
-    HelloWorld,
   },
 };
 </script>
+
+<style lang="less" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.2s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
+}
+
+</style>
+
