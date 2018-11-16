@@ -27,10 +27,16 @@ const datastore = {
       contactRef.forEach((doc) => {
         const contact = doc.data();
         contact.id = doc.id;
+        contact.birthDate = contact.birthDate.toDate();
+        contact.events = contact.events.map(event => ({ date: event.date.toDate(), label: event.label }));
         contacts.push(contact);
       });
       resolve(contacts);
-    }))
+    })),
+  updateContact: (contact) => {
+    const { id } = contact;
+    groupCollection.doc(id).update(contact);
+  }
 };
 
 export default datastore;

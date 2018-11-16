@@ -1,48 +1,51 @@
 <template>
-  <div class="flex flex-col w-full mx-3">
-     <div class="flex flex-row py-3 px-3 text-sm font-medium">
-      <div class="w-1/3 sm:w-1/5 md:w-2/5 mr-6">
+  <div class="flex flex-col w-full m-3 p-3 bg-white rounded shadow">
+     <div class="flex flex-row py-4 px-4 text-sm font-medium">
+      <div class="w-1/3 md:w-2/5 mr-6">
         Name 
       </div>
-      <div class="w-1/3 md:w-1/6 truncate mr-6">
+      <div class="w-1/3 md:w-2/5 truncate mr-6">
         Phone Number
       </div>
-      <div class="w-1/3 md:w-1/6 truncate mr-6">
+      <div class="w-1/3 md:w-2/5 truncate mr-6">
         Email
       </div>
-      <div class="hidden md:block w-1/3 truncate mr-6">
+      <div class="hidden md:block w-full truncate mr-6">
         Address
       </div>
-      <div class="hidden lg:block w-1/6 truncate">
+      <div class="hidden lg:block w-2/5 truncate mr-6">
         Birthday
       </div>
-      <!-- <div class="">
-        {{}}
+      <div class="w-1/5">
+        &nbsp;
       </div>
-       -->
+      
     </div>
-    <div class="flex flex-row py-3 px-3 row text-sm" v-for="c in contacts" :key="c.id" @click="openModal(c)">
-      <div class="w-1/3 sm:w-1/5 md:w-2/5 mr-6">
-        {{c.first}} {{c.last}}
+    <div class="flex flex-row h-12 content-center px-4 row text-sm" v-for="c in contacts" :key="c.id" @click="openModal(c)">
+      <div class="w-1/3 sm:w-2/5  mr-6 self-center">
+        {{c.first}} {{c.last}} {{c.suffix}}
       </div>
-      <div class="w-1/3 md:w-1/6 truncate mr-6">
+      <div class="w-1/3 md:w-2/5 truncate mr-6 self-center">
         <a :href="'tel:' +primary(c.phoneNumbers).number">{{primary(c.phoneNumbers).number}}</a>
       </div>
-      <div class="w-1/3 md:w-1/6 truncate mr-6">
+      <div class="w-1/3 md:w-2/5 truncate mr-6 self-center">
         <a :href="'mailto:' + primary(c.emailAddresses).address">{{primary(c.emailAddresses).address}}</a>
       </div>
-      <div class="hidden md:block w-1/3 truncate mr-6">
+      <div class="hidden md:block w-full truncate mr-6 self-center">
         <a :href="'https://www.google.com/maps/search/?api=1&query=' + primaryAddress(c.addresses)">{{primaryAddress(c.addresses)}}</a>
       </div>
-      <div class="hidden lg:block w-1/6 truncate">
+      <div class="hidden lg:block w-2/5 mr-6  truncate self-center">
         {{birthday(c.birthDate)}}
       </div>
-      <!-- <div class="">
-        {{}}
+      
+      <div class="w-1/5 flex justify-end">
+       <button @click="$emit('close')" class="mt-1 p-3 edit">
+          <Icon name="pencil-alt" class="text-grey-dark"/>
+        </button>
       </div>
-       -->
+       
     </div>
-    <ContactViewModal v-if="showModal" @close="closeModal()" :contact="contact"/>
+    <ContactEditModal v-if="showModal" @close="closeModal()" :contact="contact"/>
   </div>
 </template>
 
@@ -51,11 +54,14 @@ import moment from 'moment';
 import datastore from '../services/datastore';
 
 import ContactViewModal from '../components/ContactViewModal';
+import ContactEditModal from '../components/ContactEditModal';
+
 
 export default {
   name: 'contact-list',
   components: {
-    ContactViewModal
+    ContactViewModal,
+    ContactEditModal
   },
   data() {
     return {
@@ -82,8 +88,10 @@ export default {
       return `${a.address} ${a.city}, ${a.state} ${a.zipcode}`;
     },
     birthday(date) {
-      const d = new Date(date.toDate());
-      return moment(d).format('MMMM Do')
+      if (!date){
+        return;
+      }
+      return moment(date).format('MMMM Do')
     },
     openModal(contact){
       this.contact = contact;
@@ -107,5 +115,10 @@ export default {
 .row:hover {
   @apply .bg-grey-lighter .border-t .border-b .border-grey-light cursor-pointer;
 }
-
+.edit {
+  display: none;
+}
+.row:hover .edit {
+  display: block;
+}
 </style>

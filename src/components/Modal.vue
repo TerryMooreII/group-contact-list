@@ -2,16 +2,13 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-container mt-5 sm:mt-24 mx-auto">
-      <div class="header flex justify-between">
+      <div class="header flex justify-between border-b border-grey-light p-6">
         <slot name="header" />
-        <button @click="$emit('close')" class="h-5 w-5">
-          <Icon name="times" />
-        </button>
       </div>
-      <div class="body">
+      <div class="body p-6 overflow-auto">
         <slot />
       </div>
-      <div class="footer">
+      <div class="footer border-t border-grey-light p-6">
         <slot name="footer" />
       </div>
     </div>
@@ -22,9 +19,12 @@
 <script>
 export default {
   name: 'Modal',
-  props: {
-    msg: String,
+  beforeCreate() {
+    document.body.classList.add('overflow-hidden')
   },
+  beforeDestroy() {
+    document.body.classList.remove('overflow-hidden')
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -41,8 +41,7 @@ export default {
 
 
 .modal-container {
-  width: 600px;
-  padding: 20px 30px;
+  width: calc(100vw / 2);
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
@@ -50,9 +49,9 @@ export default {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-
 .body {
-  margin: 20px 0;
+  padding: 20px 20px 20px 40px;
+  max-height: calc(100vh / 2);
 }
 
 .modal-enter {
