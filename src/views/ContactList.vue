@@ -21,7 +21,7 @@
       </div>
       
     </div>
-    <div class="flex flex-row h-12 content-center px-4 row text-sm" v-for="c in contacts" :key="c.id" @click="openModal(c)">
+    <div class="flex flex-row h-12 content-center px-4 row text-sm" v-for="c in contacts" :key="c.id" @click="openViewModal(c)">
       <div class="w-1/3 sm:w-2/5  mr-6 self-center">
         {{c.first}} {{c.last}} {{c.suffix}}
       </div>
@@ -39,13 +39,14 @@
       </div>
       
       <div class="w-1/5 flex justify-end">
-       <button @click="$emit('close')" class="mt-1 p-3 edit">
+       <button class="mt-1 p-3 edit" @click.stop="openEditModal(c)">
           <Icon name="pencil-alt" class="text-grey-dark"/>
         </button>
       </div>
        
     </div>
-    <ContactEditModal v-if="showModal" @close="closeModal()" :contact="contact"/>
+    <ContactEditModal v-if="showEditModal" @close="closeEditModal()" :contact="contact"/>
+    <ContactViewModal v-if="showViewModal" @close="closeViewModal()" :contact="contact"/>
   </div>
 </template>
 
@@ -67,7 +68,8 @@ export default {
     return {
       contacts: null,
       contact: null,
-      showModal: false
+      showEditModal: false,
+      showViewModal: false
     }
   },
   methods: {
@@ -93,13 +95,21 @@ export default {
       }
       return moment(date).format('MMMM Do')
     },
-    openModal(contact){
+    openEditModal(contact){
       this.contact = contact;
-      this.showModal = true
+      this.showEditModal = true
     },
-    closeModal(contact){
+    openViewModal(contact){
+      this.contact = contact;
+      this.showViewModal = true
+    },
+    closeEditModal(contact){
       this.contact = null;
-      this.showModal = false;
+      this.showEditModal = false;
+    },
+    closeViewModal(contact){
+      this.contact = null;
+      this.showViewModal = false;
     },
   },
   mounted() {

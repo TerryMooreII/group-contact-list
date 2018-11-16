@@ -23,7 +23,7 @@
             <div class="inline-block"><a :href="'tel:' + n.number">{{n.number}}</a></div> 
             <div class="text-grey text-sm inline-block">
               <Icon name="circle" class="h-1 w-1 ml-3 mr-1  mb-px "/> 
-              {{n.type}}
+              {{n.label}}
             </div>
           </li>
         </ul>
@@ -39,7 +39,7 @@
               <div class="inline-block"><a :href="'mailto:' + n.address">{{n.address}}</a></div> 
               <div class="text-grey text-sm inline-block">
                 <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
-                {{n.type}}
+                {{n.label}}
               </div>
             </div>
           </li>
@@ -59,7 +59,7 @@
                 </div> 
               <div class="text-grey text-sm inline-block">
                 <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
-                {{n.type}}
+                {{n.label}}
               </div>
             </div>
           </li>
@@ -82,17 +82,17 @@
         </ul>
       </div>
 
-      <div class="flex mb-8" v-if="contact.marriages.length">
+      <div class="flex mb-8" v-if="contact.events.length">
           <div class="w-12">
           <Icon name="heart" class="text-grey-dark"/>
         </div>
         <ul class="list-reset">
-          <li c v-for="(n, index) in contact.marriages" :key="index" class="pb-3">
+          <li c v-for="(n, index) in contact.events" :key="index" class="pb-3">
             <div class="">
-              <div class="inline-block">{{date(n.weddingDate)}}</div>  
+              <div class="inline-block">{{date(n.date)}}</div>  
               <div class="text-grey text-sm inline-block">
                 <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
-                Anniversary
+                {{n.label}}
               </div>
             </div>
           </li>
