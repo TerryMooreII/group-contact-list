@@ -1,7 +1,7 @@
 <template>
    <div>
-    <!-- <Navbar class="block sm:hidden" @menu="() => this.show = !this.show"/> -->
-    <div class="flex mx-1 sm:mx-20">
+    <Navbar />
+    <div class="flex mx-1 sm:mx-20 pt-20">
       <transition
         name="fade"
         mode="out-in">
@@ -13,10 +13,12 @@
 </template>
 
 <script>
+import Navbar from '../components/Navbar';
 
 export default {
   name: 'contact-list',
   components: {
+    Navbar
   },
 };
 </script>

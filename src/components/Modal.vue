@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-container mt-5 sm:mt-24 mx-auto">
-      <div class="header flex justify-between border-b border-grey-light p-6">
+      <div class="header flex justify-between border-b border-grey-light p-6 text-white bg-teal-dark">
         <slot name="header" />
       </div>
       <div class="body p-6 overflow-auto">

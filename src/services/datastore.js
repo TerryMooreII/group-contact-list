@@ -19,23 +19,38 @@ firebase.firestore().settings(settings);
 const groupCollection = firebase.firestore()
   .collection('schmitz');
 
+const toContact = (doc) => {
+  const contact = doc.data();
+  contact.id = doc.id;
+  contact.birthDate = contact.birthDate.toDate();
+  contact.events = contact.events
+    .map(event => ({ date: event.date.toDate(), label: event.label }));
+  return contact;
+}
+
 const datastore = {
 
   getContactList: () => new Promise(resolve => groupCollection
     .onSnapshot((contactRef) => {
       const contacts = [];
       contactRef.forEach((doc) => {
-        const contact = doc.data();
-        contact.id = doc.id;
-        contact.birthDate = contact.birthDate.toDate();
-        contact.events = contact.events.map(event => ({ date: event.date.toDate(), label: event.label }));
-        contacts.push(contact);
+        contacts.push(toContact(doc));
       });
       resolve(contacts);
     })),
+
+  getContact: id => groupCollection.doc(id).get().then(doc => toContact(doc)),
+
   updateContact: (contact) => {
     const { id } = contact;
-    groupCollection.doc(id).update(contact);
+    return groupCollection.doc(id).update(contact);
+  },
+
+  addContact: contact => groupCollection.doc().add(contact),
+
+  deleteContact(contact) {
+    const { id } = contact;
+    return groupCollection.doc(id).delete();
   }
 };
 

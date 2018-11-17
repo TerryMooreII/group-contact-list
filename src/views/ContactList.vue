@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col w-full m-3 p-3 bg-white rounded shadow">
-     <div class="flex flex-row py-4 px-4 text-sm font-medium">
+     <div class="flex flex-row py-4 px-4 text-sm font-medium sticky pin-nav bg-white z-10">
       <div class="w-1/3 md:w-2/5 mr-6">
         Name 
       </div>
@@ -45,8 +45,7 @@
       </div>
        
     </div>
-    <ContactEditModal v-if="showEditModal" @close="closeEditModal()" :contact="contact"/>
-    <ContactViewModal v-if="showViewModal" @close="closeViewModal()" :contact="contact"/>
+     <router-view/>
   </div>
 </template>
 
@@ -67,6 +66,7 @@ export default {
   data() {
     return {
       contacts: null,
+      results: null,
       contact: null,
       showEditModal: false,
       showViewModal: false
@@ -96,27 +96,39 @@ export default {
       return moment(date).format('MMMM Do')
     },
     openEditModal(contact){
-      this.contact = contact;
-      this.showEditModal = true
+      this.$router.push({ name: 'contactedit', query: {search: this.$route.query.search}, params: { group: this.$route.params.group, id: contact.id } } ); 
     },
     openViewModal(contact){
-      this.contact = contact;
-      this.showViewModal = true
+      this.$router.push({ name: 'contactview',  query: {search: this.$route.query.search}, params: { group: this.$route.params.group, id: contact.id } } ); 
     },
-    closeEditModal(contact){
-      this.contact = null;
-      this.showEditModal = false;
-    },
-    closeViewModal(contact){
-      this.contact = null;
-      this.showViewModal = false;
-    },
+    query(search) {
+      if (!search){
+        this.contacts = this.results;
+        return;
+      }  
+      this.contacts = this.results.filter(contact => contact.first.toLowerCase().includes(search) || contact.last.toLowerCase().includes(search));
+    }
+  },
+  watch: {
+    '$route.query.search': function (val) {
+      const search = !val ? val : val.toLowerCase();
+      this.query(search);
+    }
   },
   mounted() {
-    datastore.getContactList().then(contacts => this.contacts = contacts.sort(this.sort));
+    datastore.getContactList().then(contacts => { 
+      this.results = contacts.sort(this.sort);
+      this.query()
+    });
+
   }
 };
 </script>
+
+<style lang="less" scoped>
+
+</style>
+
 
 <style lang="postcss" scoped>
 .row {
@@ -131,4 +143,9 @@ export default {
 .row:hover .edit {
   display: block;
 }
+
+.pin-nav {
+  top: 68px
+}
+
 </style>

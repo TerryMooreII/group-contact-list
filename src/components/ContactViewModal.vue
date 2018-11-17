@@ -3,11 +3,11 @@
     <template slot="header">
       <h2 class="self-center">{{contact.first}} {{contact.last}} {{contact.suffix}}</h2>
       <div flex justify-end>
-        <button @click="$emit('close')" class="p-1 pt-2 mr-2">
-        <Icon name="pencil-alt" class="h-5 w-5 text-grey-darker"/>
+        <button @click="edit()" class="p-1 pt-2 mr-2">
+        <Icon name="pencil-alt" class="h-5 w-5 text-grey-light hover:text-grey"/>
       </button>  
       <button @click="$emit('close')" class="p-1 pt-2">
-          <Icon name="times" class="h-5 w-5 text-grey-darker"/>
+          <Icon name="times" class="h-5 w-5 text-grey-light hover:text-grey"/>
         </button>
       </div>
       
@@ -120,6 +120,9 @@ export default {
     },
     timeSince(date) {
       return moment().diff(date, 'years', false);
+    },
+    edit(){
+      this.$router.push({ name: 'contactedit', query: {search: this.$route.query.search}, params: { group: this.$route.params.group, id: this.contact.id } } ); 
     }
   }
 };

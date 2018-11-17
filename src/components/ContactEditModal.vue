@@ -3,7 +3,7 @@
     <template slot="header">
       <h2 class="self-center">Edit Contact</h2>
       <button @click="$emit('close')" class="p-1 pt-2">
-        <Icon name="times" class="h-5 w-5 text-grey-darker"/>
+        <Icon name="times" class="h-5 w-5 text-grey-light hover:text-grey"/>
       </button>
     </template>
 
