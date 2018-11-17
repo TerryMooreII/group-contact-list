@@ -4,17 +4,17 @@
       <h2 class="self-center">{{contact.first}} {{contact.last}} {{contact.suffix}}</h2>
       <div flex justify-end>
         <button @click="edit()" class="p-1 pt-2 mr-2">
-        <Icon name="pencil-alt" class="h-5 w-5 text-grey-light hover:text-grey"/>
+        <Icon name="pencil-alt" class="h-5 w-5 text-grey-lightest hover:text-grey-lighter"/>
       </button>  
       <button @click="$emit('close')" class="p-1 pt-2">
-          <Icon name="times" class="h-5 w-5 text-grey-light hover:text-grey"/>
+          <Icon name="times" class="h-5 w-5 text-grey-lightest hover:text-grey-lighter"/>
         </button>
       </div>
       
     </template>
     <div class="flex flex-col ml-3">
 
-      <div class="flex mb-8" v-if="contact.phoneNumbers.length">
+      <div class="flex my-8" v-if="contact.phoneNumbers.length">
           <div class="w-12">
           <Icon name="phone" flip="horizontal" class="text-grey-dark"/>
         </div>
@@ -84,7 +84,7 @@
 
       <div class="flex mb-8" v-if="contact.events.length">
           <div class="w-12">
-          <Icon name="heart" class="text-grey-dark"/>
+          <Icon name="calendar-alt" class="text-grey-dark"/>
         </div>
         <ul class="list-reset">
           <li c v-for="(n, index) in contact.events" :key="index" class="pb-3">

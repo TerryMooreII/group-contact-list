@@ -19,7 +19,7 @@
       </div>
       <div>
         <router-link :to="{ name: 'contactnew', query: { search: this.$route.query.search }, params: { group: this.$route.params.group } }"
-          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">
+          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:no-underline hover:bg-white mt-4 lg:mt-0">
           Add Contact   
         </router-link>
       </div>

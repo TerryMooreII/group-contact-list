@@ -3,7 +3,7 @@
     <template slot="header">
       <h2 class="self-center">Edit Contact</h2>
       <button @click="$emit('close')" class="p-1 pt-2">
-        <Icon name="times" class="h-5 w-5 text-grey-light hover:text-grey"/>
+        <Icon name="times" class="h-5 w-5 text-grey-lightest hover:text-grey-lighter"/>
       </button>
     </template>
 
@@ -117,10 +117,20 @@
     </div>
 
     <template slot="footer">
-        <div class="flex justify-end">
-          <button type="button" class="btn btn-primary" @click="save()">
+      <div class="flex justify-between py-4 px-6">
+        <div class="flex">
+          <button type="button" class="btn btn-danger mr-4" @click="$emit('close')">
+            Delete
+          </button>
+        </div>
+        <div class="flex">
+          <button type="button" class="btn btn-primary mr-4" @click="$emit('close')">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" @click="save()" :disabled="!contact.first">
             Save
           </button>
+        </div>
         </div>
       </template>
   </Modal>
@@ -160,9 +170,27 @@ export default {
     add(array){
       array.push({});
     },
+    sanitize(){
+      Object.keys(this.contact).forEach(value => {
+        console.log(value)
+        if (Array.isArray(this.contact[value])) {
+          if (this.contact[value].length > 0 && Object.keys(this.contact[value][0]).length === 0) {
+            this.contact[value] = [];
+          }
+        }
+        if (this.contact[value] === null) {
+          this.contact[value] = ''
+        }
+      })
+    },
     save() {
+      this.sanitize();
+      console.log(this.contact);
       if (this.contact.id) {
         datastore.updateContact(this.contact);
+        this.$emit('close');
+      } else {
+        datastore.addContact(this.contact);
         this.$emit('close');
       }
     }

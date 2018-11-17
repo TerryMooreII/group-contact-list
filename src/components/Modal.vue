@@ -1,14 +1,14 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-container mt-5 sm:mt-24 mx-auto">
-      <div class="header flex justify-between border-b border-grey-light p-6 text-white bg-teal-dark">
+      <div class="modal-container mt-5 sm:mt-24 mx-auto rounded">
+      <div class="header flex justify-between border-b border-grey-light py-4 px-6 text-white bg-teal rounded">
         <slot name="header" />
       </div>
       <div class="body p-6 overflow-auto">
         <slot />
       </div>
-      <div class="footer border-t border-grey-light p-6">
+      <div class="footer border-t border-grey-light">
         <slot name="footer" />
       </div>
     </div>

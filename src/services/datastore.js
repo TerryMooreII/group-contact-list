@@ -22,9 +22,9 @@ const groupCollection = firebase.firestore()
 const toContact = (doc) => {
   const contact = doc.data();
   contact.id = doc.id;
-  contact.birthDate = contact.birthDate.toDate();
+  contact.birthDate = contact.birthDate ? contact.birthDate.toDate() : null;
   contact.events = contact.events
-    .map(event => ({ date: event.date.toDate(), label: event.label }));
+    .map(event => ({ date: event.date ? event.date.toDate() : null, label: event.label }));
   return contact;
 }
 
@@ -46,7 +46,7 @@ const datastore = {
     return groupCollection.doc(id).update(contact);
   },
 
-  addContact: contact => groupCollection.doc().add(contact),
+  addContact: contact => groupCollection.add(contact),
 
   deleteContact(contact) {
     const { id } = contact;

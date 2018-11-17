@@ -32,9 +32,23 @@ a:hover {
 }
 
 .btn-primary {
-  @apply .text-blue-dark .border .border-blue-dark rounded .outline-none
+  @apply .text-teal-dark .border .border-teal-dark rounded .outline-none
 }
+
 .btn-primary:hover {
   @apply .bg-grey-lighter
+}
+
+.btn-primary[disabled] {
+  @apply .bg-grey-light;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  @apply .text-red-dark .border .border-red-dark rounded .outline-none
+}
+
+.btn-danger:hover {
+  @apply .bg-red-lighter 
 }
 </style>
