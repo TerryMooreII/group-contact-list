@@ -110,7 +110,7 @@
                 placeholder="Event"
               />
               <input type="text" class="input w-2/5" v-model="n.label" placeholder="Label" :click="() => show = true">        
-              <AddRemove :array="contact.emailAddresses" :index="index" />
+              <AddRemove :array="contact.events" :index="index" />
           </li>
         </ul>
       </div>
@@ -170,22 +170,7 @@ export default {
     add(array){
       array.push({});
     },
-    sanitize(){
-      Object.keys(this.contact).forEach(value => {
-        console.log(value)
-        if (Array.isArray(this.contact[value])) {
-          if (this.contact[value].length > 0 && Object.keys(this.contact[value][0]).length === 0) {
-            this.contact[value] = [];
-          }
-        }
-        if (this.contact[value] === null) {
-          this.contact[value] = ''
-        }
-      })
-    },
     save() {
-      this.sanitize();
-      console.log(this.contact);
       if (this.contact.id) {
         datastore.updateContact(this.contact);
         this.$emit('close');

@@ -26,7 +26,22 @@ const toContact = (doc) => {
   contact.events = contact.events
     .map(event => ({ date: event.date ? event.date.toDate() : null, label: event.label }));
   return contact;
-}
+};
+
+const sanitize = (c) => {
+  const contact = c;
+  Object.keys(contact).forEach((value) => {
+    if (Array.isArray(contact[value])) {
+      if (contact[value].length > 0 && Object.keys(contact[value][0]).length === 0) {
+        contact[value] = [];
+      }
+    }
+    if (contact[value] === null) {
+      contact[value] = '';
+    }
+  });
+  return contact;
+};
 
 const datastore = {
 
@@ -43,10 +58,10 @@ const datastore = {
 
   updateContact: (contact) => {
     const { id } = contact;
-    return groupCollection.doc(id).update(contact);
+    return groupCollection.doc(id).update(sanitize(contact));
   },
 
-  addContact: contact => groupCollection.add(contact),
+  addContact: contact => groupCollection.add(sanitize(contact)),
 
   deleteContact(contact) {
     const { id } = contact;
