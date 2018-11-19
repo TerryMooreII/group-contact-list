@@ -1,13 +1,13 @@
 <template>
-  <nav class="flex items-center justify-between flex-wrap bg-teal p-4 px-24 fixed pin-t w-full">
-    <div class="flex items-center flex-no-shrink text-white mr-6">
+  <nav class="flex items-center justify-between flex-wrap bg-teal py-2 py-4 px-2 sm:px-24 fixed pin-t w-full">
+    <div class="flex items-center flex-no-shrink text-white mr-6 ml-3 sm:ml-0">
       <Icon name="users" scale="2" />
       <span class="font-semibold text-xl ml-2">Schmitz Contacts</span>
     </div>
-    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-      <div class="text-sm lg:flex-grow px-10 relative">
+    <div class="lg:flex-grow flex items-center lg:w-auto ">
+
+      <div class="text-sm lg:flex-grow px-10 relative hidden lg:block">
         <Icon name="search" class="absolute mt-2 ml-2 text-teal-dark" />
-        
         <form @submit.prevent="go()">
           <input type="text" 
                placeholder="Search Contacts"
@@ -17,10 +17,16 @@
           <Icon name="times" class="text-grey-dark hover:text-grey-darker -mt-px" />
         </button>
       </div>
+      <!-- <button class="hidden lg:hidden mr-2 text-white flex text-sm px-4 py-2 border rounded border-white"
+              @click="toggleSearch()">
+        <Icon name="search" />
+      </button> -->
+
       <div>
         <router-link :to="{ name: 'contactnew', query: { search: this.$route.query.search }, params: { group: this.$route.params.group } }"
-          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:no-underline hover:bg-white mt-4 lg:mt-0">
-          Add Contact   
+          class="btn-nav">
+          <Icon name="plus" class="self-center h-4 w-4"/>
+          <span class="ml-2 self-center hidden sm:block"> Add Contact</span>
         </router-link>
       </div>
     </div>
@@ -35,7 +41,8 @@ export default {
   data() {
     return {
       search: null,
-      timeout: null
+      timeout: null,
+      isSearchShowing: false
     }
   },
   methods: {
@@ -45,6 +52,9 @@ export default {
     },
     go () {
       this.$router.push(`/${this.$route.params.group}/?search=${this.search}`);
+    },
+    toggleSearch() {
+      this.isSearchShowing = !this.isSearchShowing;
     }
   },
   watch: {
@@ -63,5 +73,11 @@ input::placeholder {
 }
 input {
   @apply .outline-none
+}
+.btn-nav {
+  @apply .flex .text-sm .px-4 .py-2 .leading-none .border .rounded .text-white .border-white 
+}
+.btn-nav:hover {
+  @apply .border-transparent .text-teal .no-underline .bg-white 
 }
 </style>

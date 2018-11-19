@@ -51,4 +51,17 @@ a:hover {
 .btn-danger:hover {
   @apply .bg-red-lighter 
 }
+
+.input {
+  @apply .border-b .border-grey-light .mt-2 .mx-3 .outline-none .mb-3
+}
+
+.checkbox {
+  @apply .mr-2
+}
+
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  @apply .text-grey;
+  opacity: 1; /* Firefox */
+}
 </style>

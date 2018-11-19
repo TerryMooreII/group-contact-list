@@ -5,22 +5,39 @@ import ContactView from './views/ContactView.vue';
 import ContactEdit from './views/ContactEdit.vue';
 import ContactNew from './views/ContactNew.vue';
 import Home from './views/Home.vue';
+import Login from './views/Login.vue';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/login',
+      component: Login,
+      name: 'login'
+    },
+    {
+      path: '/:group/login',
+      component: Login,
+      name: 'login'
+    },
+    {
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        requiresAuth: true
+      },
       children: [
         {
           path: ':group',
           component: ContactList,
           name: 'contactlist',
+          meta: {
+            requiresAuth: true
+          },
           children: [
             {
               path: 'new',
@@ -43,3 +60,15 @@ export default new Router({
     }
   ],
 });
+
+
+router.beforeEach((to, from, next) => {
+  // TODO: Yep this security sucks
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  if (!sessionStorage.getItem('group') && requiresAuth) {
+    next(`/${to.params.group}/login`);
+  } else {
+    next();
+  }
+});
+export default router;

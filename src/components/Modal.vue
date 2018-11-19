@@ -67,4 +67,32 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+@media (max-width: 992px) { 
+  .modal-container {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0;
+  }
+  .body {
+    padding: 5px 20px;
+    max-height: 100%;
+    padding-bottom: 140px;
+  }
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+  }
+}
+
+
+// screens: {
+//   'sm': '576px',
+//   // => 
+//   'md': '768px',
+//   // => @media (min-width: 768px) { ... }
+
 </style>
