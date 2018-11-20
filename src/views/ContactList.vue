@@ -52,6 +52,7 @@
 <script>
 import moment from 'moment';
 import datastore from '../services/datastore';
+import Eventbus from '../services/eventbus';
 import ProfilePic from '../components/ProfilePic';
 import ContactViewModal from '../components/ContactViewModal';
 import ContactEditModal from '../components/ContactEditModal';
@@ -116,6 +117,10 @@ export default {
   },
   mounted() {
     datastore.getContactList().then(contacts => { 
+      Eventbus.$on('contacts', contacts => {
+        this.results = contacts.sort(this.sort);
+      this.query()
+      });
       this.results = contacts.sort(this.sort);
       this.query()
     });

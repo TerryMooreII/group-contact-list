@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-
+import Eventbus from './eventbus';
 
 const config = {
   apiKey: 'AIzaSyBHg_bKCp8xe-7mxV9ZI9jptVI-WCqLjz8',
@@ -21,7 +21,10 @@ const groupCollection = firebase.firestore()
 
 const toContact = (doc) => {
   const contact = doc.data();
+  if (!contact) return undefined;
+
   contact.id = doc.id;
+
   contact.birthDate = contact.birthDate ? contact.birthDate.toDate() : null;
   contact.events = contact.events
     .map(event => ({ date: event.date ? event.date.toDate() : null, label: event.label }));
@@ -51,6 +54,7 @@ const datastore = {
       contactRef.forEach((doc) => {
         contacts.push(toContact(doc));
       });
+      Eventbus.$emit('contacts', contacts);
       resolve(contacts);
     })),
 
