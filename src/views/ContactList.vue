@@ -116,7 +116,7 @@ export default {
     }
   },
   mounted() {
-    datastore.getContactList().then(contacts => { 
+    datastore.getContactList(this.$route.params.group).then(contacts => { 
       Eventbus.$on('contacts', contacts => {
         this.results = contacts.sort(this.sort);
       this.query()

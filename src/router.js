@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import datastore from './services/datastore';
 import ContactList from './views/ContactList.vue';
 import ContactView from './views/ContactView.vue';
 import ContactEdit from './views/ContactEdit.vue';
@@ -15,11 +16,6 @@ const router = new Router({
   routes: [
     {
       path: '/login',
-      component: Login,
-      name: 'login'
-    },
-    {
-      path: '/:group/login',
       component: Login,
       name: 'login'
     },
@@ -63,12 +59,13 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
-  // TODO: Yep this security sucks
+  const currentUser = datastore.getCurrentUser();
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  if (!sessionStorage.getItem('group') && requiresAuth) {
-    next(`/${to.params.group}/login`);
+  if (!currentUser && requiresAuth) {
+    next('/login');
   } else {
     next();
   }
 });
+
 export default router;

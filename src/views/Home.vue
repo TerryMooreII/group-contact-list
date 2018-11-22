@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import datastore from '../services/datastore';
 import Navbar from '../components/Navbar';
 
 export default {
@@ -20,6 +21,20 @@ export default {
   components: {
     Navbar
   },
+  beforeRouteEnter(to, from, next) {
+    const user = datastore.getCurrentUser();
+    if (!user) {
+      next('/login')
+    }
+    datastore.groupsEmailAccontIsBelongsTo('terry.moore.ii@gmail.com')
+      .then(groups => {
+        if (groups.length > 0) {
+          next(vm => vm.$router.push('/schmitz'));
+        }else {
+          next('/login');
+        }
+      });
+  }
 };
 </script>
 

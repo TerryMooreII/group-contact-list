@@ -8,7 +8,7 @@
       <div>
         Username
       </div>
-      <input type="password" class="input w-full" v-model="user.username">
+      <input type="text" class="input w-full" v-model="user.email">
       <div class="mt-6">
         Password
       </div>
@@ -36,11 +36,25 @@ export default {
   },
   methods: {
     login() {
-      // datastore.login(this.user).then(isSuccess => {
-      //   this.$router.push(`/${this.$route.params.group}`);
-      // })
-      sessionStorage.setItem('group', this.$route.params.group);
-      this.$router.push(`/${this.$route.params.group}`);
+      if (!this.user.email) {
+        this.error = 'Email address is required';
+        return
+      }
+
+      if (!this.user.password) {
+        this.error = 'Password is required';
+        return;
+      }
+
+
+      datastore.login(this.user).then(isSuccess => {
+        this.$router.push('/');
+      }).catch(error => {
+        console.log(error, ['auth/wrong-password', 'auth/user-not-found'].includes(error.code));
+        if (['auth/wrong-password', 'auth/user-not-found'].includes(error.code)) {
+          this.error = 'Invalid email address or password.';
+       }
+      });
     }
   }
 };

@@ -17,7 +17,7 @@ firebase.firestore().settings(settings);
 
 
 const groupCollection = firebase.firestore()
-  .collection('schmitz');
+  .collection('contacts');
 
 const toContact = (doc) => {
   const contact = doc.data();
@@ -48,7 +48,7 @@ const sanitize = (c) => {
 
 const datastore = {
 
-  getContactList: () => new Promise(resolve => groupCollection
+  getContactList: group => new Promise(resolve => groupCollection.where('group', '==', group)
     .onSnapshot((contactRef) => {
       const contacts = [];
       contactRef.forEach((doc) => {
@@ -70,7 +70,35 @@ const datastore = {
   deleteContact(contact) {
     const { id } = contact;
     return groupCollection.doc(id).delete();
-  }
+  },
+
+  groupsEmailAccontIsBelongsTo(email) {
+    return new Promise(resolve => groupCollection.where('accounts', 'array-contains', email.toLowerCase())
+      .onSnapshot((contactRef) => {
+        const accounts = [];
+        contactRef.forEach((doc) => {
+          accounts.push(doc.data().group);
+        });
+        resolve(accounts);
+      }));
+  },
+
+  login({ email, password }) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  },
+
+  logout() {
+    return firebase.auth().signOut();
+  },
+
+  signup({ email, password }) {
+    return firebase.auth().createUserWithEmailAndPassword(email, password);
+  },
+
+  getCurrentUser() {
+    return firebase.auth().currentUser;
+  },
+
 };
 
 export default datastore;

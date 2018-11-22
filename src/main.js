@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import firebase from 'firebase';
 import 'vue-awesome/icons';
 import Icon from 'vue-awesome/components/Icon.vue';
 import VuePikaday from '@enrian/vue-pikaday';
@@ -16,8 +17,10 @@ Vue.use(VuePikaday);
 
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  store,
-  render: h => h(App),
-}).$mount('#app');
+firebase.auth().onAuthStateChanged(() => {
+  new Vue({
+    router,
+    store,
+    render: h => h(App),
+  }).$mount('#app');
+});
