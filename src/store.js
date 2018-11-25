@@ -6,10 +6,11 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     groups: [],
-    currentGroup: null
+    currentGroup: localStorage.getItem('default-group')
   },
   mutations: {
     setCurrentGroup({ commit }, group) {
+      localStorage.setItem('default-group', group);
       commit('setCurrentGroup', group);
     },
     setAvailableGroups({ commit }, groups) {

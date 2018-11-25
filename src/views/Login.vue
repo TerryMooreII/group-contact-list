@@ -1,25 +1,30 @@
 <template>
   <div class="flex justify-center mt-32">
-
-    <form class="flex-col w-full sm:w-1/2 lg:w-1/3 rounded border border-grey-light bg-white shadow p-8" @submit.prevent="login">
-      <h1 class="text-lg mb-8">
-        Contact List Login
-      </h1>
-      <div>
-        Username
+    <div class="flex flex-col w-full sm:w-1/2 lg:w-1/3 ">
+      <form class="flex-colrounded bg-white shadow p-8 border-t border-t-12 border-teal-dark block" @submit.prevent="login">
+        <h1 class="text-lg mb-8">
+          Group Contact List Login
+        </h1>
+        <div>
+          Username
+        </div>
+        <input type="text" class="input w-full" v-model="user.email">
+        <div class="mt-6">
+          Password
+        </div>
+        <input type="password" class="input w-full" v-model="user.password">
+        <div v-if="error" class="text-red py-4">
+          {{error}}
+        </div>
+        <div class="flex justify-between mt-8">
+          <router-link class="text-teal-dark self-center" to="/forgot_password">Forgot Password</router-link>
+          <button class="btn-primary px-4 py-2 self-end">Login</button>
+        </div>
+      </form>
+      <div class="flex justify-center mt-8 text-grey-darker">
+        Don't have an account?&nbsp;<router-link class="text-teal-dark self-center" to="/create_account">Create Account</router-link>
       </div>
-      <input type="text" class="input w-full" v-model="user.email">
-      <div class="mt-6">
-        Password
-      </div>
-      <input type="password" class="input w-full" v-model="user.password">
-      <div v-if="error" class="text-red py-4">
-        {{error}}
-      </div>
-      <div class="flex justify-end mt-8">
-        <button class="btn-primary px-4 py-2 self-end">Login</button>
-      </div>
-    </form>
+    </div>
   </div>
 </template>
 

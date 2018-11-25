@@ -22,6 +22,8 @@
         <Icon name="search" />
       </button> -->
 
+       
+
       <div>
         <router-link :to="{ name: 'contactnew', query: { search: this.$route.query.search }, params: { group: this.$route.params.group } }"
           class="btn-nav">
@@ -29,6 +31,10 @@
           <span class="ml-2 self-center hidden sm:block"> Add Contact</span>
         </router-link>
       </div>
+      <button class="ml-2 btn-nav"
+              @click="logout()">
+        <Icon name="sign-out-alt" />
+      </button>
     </div>
   </nav>
 
@@ -36,6 +42,8 @@
 </template>
 
 <script>
+import datastore from '../services/datastore';
+
 export default {
   name: 'Navbar',
   data() {
@@ -55,6 +63,10 @@ export default {
     },
     toggleSearch() {
       this.isSearchShowing = !this.isSearchShowing;
+    },
+    logout() {
+      datastore.logout();
+      this.$router.push('/login');
     }
   },
   watch: {

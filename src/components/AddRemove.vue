@@ -18,7 +18,7 @@ export default {
   },
   methods:{
      add(array){
-      array.push({});
+      array.push({ });
     },
     remove(array, index){
       array.splice(index, 1);

@@ -43,6 +43,10 @@ const sanitize = (c) => {
       contact[value] = '';
     }
   });
+
+  // set access emails
+  contact.accounts = contact.emailAddresses.map(email => email.address);
+
   return contact;
 };
 

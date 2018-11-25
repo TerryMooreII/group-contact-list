@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       contact: {
+        group: this.$store.state.group,
         addresses: [],
         events:[],
         phoneNumbers:[],

@@ -23,13 +23,25 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     const user = datastore.getCurrentUser();
+    console.log(user);
     if (!user) {
       next('/login')
     }
-    datastore.groupsEmailAccontIsBelongsTo('terry.moore.ii@gmail.com')
+    datastore.groupsEmailAccontIsBelongsTo(user.email)
       .then(groups => {
         if (groups.length > 0) {
-          next(vm => vm.$router.push('/schmitz'));
+
+          next(vm => {
+            const { group } = vm.$store.state;
+            vm.$store.dispatch('setAvailableGroups', groups);
+
+            if( group && groups.includes(group)){
+              return vm.$router.push(`/${group}`);
+            }else {
+              vm.$store.dispatch('setCurrentGroup', groups[0]);
+              return vm.$router.push(`/${groups[0]}`);
+            }
+          });
         }else {
           next('/login');
         }
