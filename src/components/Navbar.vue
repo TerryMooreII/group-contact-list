@@ -31,6 +31,16 @@
           <span class="ml-2 self-center hidden sm:block"> Add Contact</span>
         </router-link>
       </div>
+
+      <div>
+        <router-link 
+            v-if="$store.state.groups.length > 1" 
+            :to="{ name: 'switch-account', query: { search: this.$route.query.search }, params: { group: this.$route.params.group } }"
+            class="btn-nav ml-2">
+          <Icon name="redo" class="self-center h-4 w-4"/>
+        </router-link>
+      </div>
+
       <button class="ml-2 btn-nav"
               @click="logout()">
         <Icon name="sign-out-alt" />

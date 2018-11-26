@@ -8,6 +8,7 @@
         <router-view/>
       </transition>
     </div>
+    <SelectGroupModal v-if="showModal" />
   <!-- <Footer /> -->
   </div>
 </template>
@@ -15,35 +16,45 @@
 <script>
 import datastore from '../services/datastore';
 import Navbar from '../components/Navbar';
+import SelectGroupModal from '../components/SelectGroupModal';
 
 export default {
   name: 'contact-list',
   components: {
     Navbar
   },
+  data() {
+    return {
+      showModal: false
+    }
+  },
   beforeRouteEnter(to, from, next) {
     const user = datastore.getCurrentUser();
-    console.log(user);
     if (!user) {
       next('/login')
     }
+
     datastore.groupsEmailAccontIsBelongsTo(user.email)
       .then(groups => {
-        if (groups.length > 0) {
 
+        if (groups.length === 1) {
+           next(vm => {
+            vm.$store.dispatch('setCurrentGroup', groups[0]);
+            return vm.$router.push(`/${groups[0]}`);
+           });
+        } else if (groups.length > 1) {
           next(vm => {
-            const { group } = vm.$store.state;
+            const { currentGroup } = vm.$store.state;
             vm.$store.dispatch('setAvailableGroups', groups);
 
-            if( group && groups.includes(group)){
-              return vm.$router.push(`/${group}`);
+            if (currentGroup && groups.includes(currentGroup)) {
+              return vm.$router.push(`/${currentGroup}`);
             }else {
-              vm.$store.dispatch('setCurrentGroup', groups[0]);
-              return vm.$router.push(`/${groups[0]}`);
+              return vm.$router.push(`/select-group`);
             }
           });
-        }else {
-          next('/login');
+        } else {
+          next('/login?ana=true');
         }
       });
   }

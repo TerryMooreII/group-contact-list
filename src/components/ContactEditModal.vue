@@ -24,8 +24,8 @@
             Save
           </button>
         </div>
-        </div>
-      </template>
+      </div>
+    </template>
   </Modal>
 </template>
 

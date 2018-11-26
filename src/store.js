@@ -8,7 +8,7 @@ export default new Vuex.Store({
     groups: [],
     currentGroup: localStorage.getItem('default-group')
   },
-  mutations: {
+  actions: {
     setCurrentGroup({ commit }, group) {
       localStorage.setItem('default-group', group);
       commit('setCurrentGroup', group);
@@ -17,7 +17,7 @@ export default new Vuex.Store({
       commit('setAvailableGroups', groups);
     }
   },
-  actions: {
+  mutations: {
     setCurrentGroup(state, group) {
       state.currentGroup = group; // eslint-disable-line
     },

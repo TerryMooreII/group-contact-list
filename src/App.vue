@@ -35,6 +35,16 @@ a:hover {
   @apply .text-teal-dark .border .border-teal-dark rounded .outline-none
 }
 
+.btn-link {
+  color: #2c3e50;
+  text-decoration: none;
+  border: none;
+}
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+
 .btn-primary:hover {
   @apply .bg-grey-lighter
 }

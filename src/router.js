@@ -7,6 +7,8 @@ import ContactEdit from './views/ContactEdit.vue';
 import ContactNew from './views/ContactNew.vue';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
+import CreateAccount from './views/CreateAccount.vue';
+import SelectGroup from './views/SelectGroup.vue';
 
 Vue.use(Router);
 
@@ -20,6 +22,11 @@ const router = new Router({
       name: 'login'
     },
     {
+      path: '/create-account',
+      component: CreateAccount,
+      name: 'login'
+    },
+    {
       path: '/',
       name: 'home',
       component: Home,
@@ -27,6 +34,11 @@ const router = new Router({
         requiresAuth: true
       },
       children: [
+        {
+          path: '/select-group',
+          component: SelectGroup,
+          name: 'switch-account'
+        },
         {
           path: ':group',
           component: ContactList,
