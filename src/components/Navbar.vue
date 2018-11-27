@@ -2,7 +2,7 @@
   <nav class="flex items-center justify-between flex-wrap bg-teal py-2 py-4 px-2 sm:px-24 fixed pin-t w-full">
     <div class="flex items-center flex-no-shrink text-white mr-6 ml-3 sm:ml-0">
       <Icon name="users" scale="2" />
-      <span class="font-semibold text-xl ml-2">Schmitz Contacts</span>
+      <span class="font-semibold text-xl ml-2 capitalize">{{$store.state.currentGroup}} Contacts</span>
     </div>
     <div class="lg:flex-grow flex items-center lg:w-auto ">
 

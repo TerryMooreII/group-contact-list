@@ -9,6 +9,8 @@ import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import CreateAccount from './views/CreateAccount.vue';
 import SelectGroup from './views/SelectGroup.vue';
+import ForgotPassword from './views/ForgotPassword.vue';
+
 
 Vue.use(Router);
 
@@ -24,6 +26,11 @@ const router = new Router({
     {
       path: '/create-account',
       component: CreateAccount,
+      name: 'login'
+    },
+    {
+      path: '/forgot-password',
+      component: ForgotPassword,
       name: 'login'
     },
     {

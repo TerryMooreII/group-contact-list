@@ -99,6 +99,10 @@ const datastore = {
     return firebase.auth().createUserWithEmailAndPassword(email, password);
   },
 
+  sendPasswordResetEmail(email) {
+    return firebase.auth().sendPasswordResetEmail(email);
+  },
+
   getCurrentUser() {
     return firebase.auth().currentUser;
   },
