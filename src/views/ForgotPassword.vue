@@ -9,8 +9,13 @@
           Email Address
         </div>
         <input type="text" class="input w-full" v-model="user.email">
-        
-        <div class="flex justify-between mt-8">
+        <div v-if="error" class="text-red py-4">
+          {{error}}
+        </div>
+        <div class="text-green-dark" v-if="success">
+          A password reset link has been sent to {{email}}.
+        </div>
+        <div class="flex justify-end mt-8">
           <button class="btn-primary px-4 py-2 self-end">Send Reset Email</button>
         </div>
       </form>
@@ -23,13 +28,16 @@
 
 <script>
 import datastore from '../services/datastore';
+import helpers from '../utils/helpers';
 
 export default {
   name: 'Login',
   data() {
     return {
       user: {},
-      error: null
+      error: false,
+      success: false,
+      email: null
     }
   },
   methods: {
@@ -39,9 +47,23 @@ export default {
         return
       }
 
+      if (!helpers.validateEmail(this.user.email)) {
+        this.error = 'Not a valid email address';
+        return
+      }
+
+      this.error = false;
       datastore.sendPasswordResetEmail(this.user.email)
-        .then(success => console.log(success))
-        .catch(error => console.log(error));
+        .then(success => {
+          this.success = true;
+          this.email = this.user.email;
+          setTimeout(() => this.$router.push('/login'), 1000 * 30);
+        })
+        .catch(error => {
+          this.email = this.user.email;
+          this.success = true;
+          setTimeout(() => this.$router.push('/login'), 1000 * 30);
+        });
     }
   }
 };

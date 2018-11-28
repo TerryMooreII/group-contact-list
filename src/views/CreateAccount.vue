@@ -28,6 +28,10 @@
           Would you like to <router-link class="text-teal-dark self-center" to="/forgot-password">Reset Your Password</router-link>
           or type go back to the <router-link class="text-teal-dark self-center" to="/login">Login Page</router-link>
         </div>
+
+        <div v-if="success">
+          An account verification email has been sent to your email address. You will need to verify your account before you can login.
+        </div>
         
         <div class="flex justify-end mt-8">
           <button class="btn-primary px-4 py-2 self-end">Create Account</button>
@@ -39,6 +43,7 @@
 
 <script>
 import datastore from '../services/datastore';
+import helpers from '../utils/helpers';
 
 export default {
   name: 'Login',
@@ -46,13 +51,19 @@ export default {
     return {
       user: {},
       error: null,
-      showPasswordRecovery: false
+      showPasswordRecovery: false,
+      success:false
     }
   },
   methods: {
     createAccount() {
       if (!this.user.email) {
         this.error = 'Email address is required';
+        return
+      }
+
+      if (!helpers.validateEmail(this.user.email)) {
+        this.error = 'Not a valid email address';
         return
       }
 
@@ -66,11 +77,15 @@ export default {
         return;
       }
 
-
       datastore.signup(this.user).then(isSuccess => {
-        this.$router.push('/');
+        this.error = false;
+        this.showPasswordRecovery = false;
+        this.success = true;
+        datastore.sendEmailVerification(this.user.email)
+          .then(success => console.log(success))
+          .catch(error => console.log(error));
+        setTimeout(() => this.$router.push('/login'), 1000 * 30);
       }).catch(error => {
-        console.log(error);
         this.error = error.message;
         if (error.code === 'auth/email-already-in-use') {
           this.showPasswordRecovery = true

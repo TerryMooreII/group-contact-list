@@ -16,6 +16,10 @@
         <div v-if="error" class="text-red py-4">
           {{error}}
         </div>
+        <div v-if="notVerified" class="text-red py-4">
+          You have a valid account but your email address has not been verified.  Please check your email and click the verification link. 
+          <div class="inline-block btn-link" @click="resendVerification">Resend verification email</div>
+        </div>
         <div class="flex justify-between mt-8">
           <router-link class="text-teal-dark self-center" to="/forgot-password">Forgot Password</router-link>
           <button class="btn-primary px-4 py-2 self-end">Login</button>
@@ -30,19 +34,32 @@
 
 <script>
 import datastore from '../services/datastore';
+import helpers from '../utils/helpers';
 
 export default {
   name: 'Login',
   data() {
     return {
       user: {},
-      error: null
+      error: null,
+      notVerified: false
     }
   },
   methods: {
+    resendVerification() {
+      if (this.user.email) {
+        datastore.sendEmailVerification(this.user.email)
+        .then(() => this.$router.push('/login'));
+      }
+    },
     login() {
       if (!this.user.email) {
         this.error = 'Email address is required';
+        return
+      }
+
+      if (!helpers.validateEmail(this.user.email)) {
+        this.error = 'Not a valid email address';
         return
       }
 
@@ -51,11 +68,13 @@ export default {
         return;
       }
 
-
-      datastore.login(this.user).then(isSuccess => {
-        this.$router.push('/');
+      datastore.login(this.user).then(response => {
+        if (response.user.emailVerified) {
+          this.$router.push('/');
+        } else {
+          this.notVerified;
+        }
       }).catch(error => {
-        console.log(error, ['auth/wrong-password', 'auth/user-not-found'].includes(error.code));
         if (['auth/wrong-password', 'auth/user-not-found'].includes(error.code)) {
           this.error = 'Invalid email address or password.';
        }

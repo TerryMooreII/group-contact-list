@@ -103,6 +103,10 @@ const datastore = {
     return firebase.auth().sendPasswordResetEmail(email);
   },
 
+  sendEmailVerification(email) {
+    return firebase.auth().sendSignInLinkToEmail(email);
+  },
+
   getCurrentUser() {
     return firebase.auth().currentUser;
   },
