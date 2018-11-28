@@ -57,12 +57,12 @@ export default {
         .then(success => {
           this.success = true;
           this.email = this.user.email;
-          setTimeout(() => this.$router.push('/login'), 1000 * 30);
+          setTimeout(() => this.$router.push('/login'), 1000 * 10);
         })
         .catch(error => {
           this.email = this.user.email;
           this.success = true;
-          setTimeout(() => this.$router.push('/login'), 1000 * 30);
+          setTimeout(() => this.$router.push('/login'), 1000 * 10);
         });
     }
   }

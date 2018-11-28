@@ -48,7 +48,8 @@ export default {
   methods: {
     resendVerification() {
       if (this.user.email) {
-        datastore.sendEmailVerification(this.user.email)
+        this.notVerified = false;
+        datastore.sendEmailVerification()
         .then(() => this.$router.push('/login'));
       }
     },
@@ -72,7 +73,7 @@ export default {
         if (response.user.emailVerified) {
           this.$router.push('/');
         } else {
-          this.notVerified;
+          this.notVerified = true;
         }
       }).catch(error => {
         if (['auth/wrong-password', 'auth/user-not-found'].includes(error.code)) {

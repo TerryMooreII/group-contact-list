@@ -30,7 +30,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     const user = datastore.getCurrentUser();
-    if (!user) {
+    if (!user || !user.emailVerified) {
       next('/login')
     }
 

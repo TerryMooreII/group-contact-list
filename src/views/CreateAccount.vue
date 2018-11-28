@@ -84,7 +84,7 @@ export default {
         datastore.sendEmailVerification(this.user.email)
           .then(success => console.log(success))
           .catch(error => console.log(error));
-        setTimeout(() => this.$router.push('/login'), 1000 * 30);
+        setTimeout(() => this.$router.push('/login'), 1000 * 10);
       }).catch(error => {
         this.error = error.message;
         if (error.code === 'auth/email-already-in-use') {
