@@ -9,7 +9,16 @@
       </transition>
     </div>
     <SelectGroupModal v-if="showModal" />
-  <!-- <Footer /> -->
+    <footer>
+      <div class=" text-center text-grey-darker text-xs my-4">
+        <div>
+          Please send any questions, comments, or bug reports the <a href="mailto:terry.moore.ii@gmail.com">Group Contact List Team</a>
+        </div>
+          <div>
+          Made By <a href="mailto:terry.moore.ii@gmail.com">Terry Moore II</a>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 

@@ -33,18 +33,14 @@
         </div>
       </div>
       
-
-
-
       <div class="flex mb-8">
         <div class="w-10 flex justify-center pt-2">
           <Icon name="phone" flip="horizontal" class="text-grey-dark"/>
         </div>
         <ul class="list-reset w-full">
           <li  v-for="(n, index) in contact.phoneNumbers" :key="index" class="flex data-row">
-          
             <input type="text" class="input w-3/5" v-model="n.number" placeholder="Phone Number" />
-            <input type="text" class="input w-auto" v-model="n.label" placeholder="Label" :click="() => show = true">
+            <SuggestionBox class="w-auto" placeholder="Label" v-model="n.label" :suggestions="['Home','Cell', 'Work']" />
             <label class="flex w-1/5 self-center">
               <input type="checkbox" class="checkbox" v-model="n.primary" @click="makePrimary(contact.phoneNumbers, index)" />
               Primary
@@ -60,10 +56,8 @@
         </div>
         <ul class="list-reset w-full">
           <li  v-for="(n, index) in contact.emailAddresses" :key="index" class="flex data-row">
-            
               <input type="text" class="input w-3/5" v-model="n.address" placeholder="Email Address" />
-
-              <input type="text" class="input w-auto" v-model="n.label" placeholder="Label" :click="() => show = true">
+              <SuggestionBox class="w-auto" placeholder="Label" v-model="n.label" :suggestions="['Personal','Work', 'Other']" />
               <label class="flex w-1/5 self-center">
                 <input type="checkbox" class="checkbox" v-model="n.primary" @click="makePrimary(contact.emailAddresses, index)" />
                 Primary
@@ -101,7 +95,7 @@
                 :options="pikadayOptions" 
                 placeholder="Event"
               />
-              <input type="text" class="input w-2/5" v-model="n.label" placeholder="Label" :click="() => show = true">        
+              <SuggestionBox class=" w-2/5" placeholder="Label" v-model="n.label" :suggestions="['Anniversary','Graduation', 'Divorce', 'Death', 'Other']" />
               <AddRemove :array="contact.events" :index="index" />
           </li>
         </ul>
