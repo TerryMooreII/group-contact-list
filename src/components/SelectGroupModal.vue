@@ -11,9 +11,9 @@
       <h3 class="text-xs text-grey-darkest my-2">
         Please select the Group Contact List to open:
       </h3>
-      <ul class="list-reset text-lg">
-        <li v-for="group of lists" :key="group" class="my-2">
-          <button class="btn-link" @click="setGroup(group)">{{group}}</button>
+      <ul class="list-reset text-lg mt-4">
+        <li v-for="group of lists" :key="group.slug" class="my-3">
+          <button class="btn-link flex items-center" @click="setGroup(group)"><Icon name="list" class="mr-2" /> {{group.displayName}}</button>
         </li>
       </ul>
     </div>
@@ -36,7 +36,7 @@ export default {
   methods: {
     setGroup(group) {
       this.$store.dispatch('setCurrentGroup', group);
-      this.$router.push({name: 'contactlist', params:{group}})
+      this.$router.push({name: 'contactlist', params: { group: group.slug }})
     }
   },
   mounted() {

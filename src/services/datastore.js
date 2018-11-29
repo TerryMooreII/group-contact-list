@@ -52,7 +52,9 @@ const sanitize = (c) => {
 
 const datastore = {
 
-  getContactList: group => new Promise(resolve => groupCollection.where('group', '==', group)
+  getContactList: group => new Promise(resolve => groupCollection.where('group.slug', '==', group)
+    .orderBy('last', 'asc')
+    .orderBy('first', 'asc')
     .onSnapshot((contactRef) => {
       const contacts = [];
       contactRef.forEach((doc) => {

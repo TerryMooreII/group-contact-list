@@ -5,7 +5,6 @@
         Create A New Account
       </h1>
       <form class="flex-colrounded bg-white shadow p-8 border-t border-t-12 border-teal-dark block" @submit.prevent="createAccount">
-        
         <p class="text-sm text-grey-dark mb-5 text-center">
           Your email address should be part of one or more existing contact lists in order to login.
         </p>
@@ -29,7 +28,7 @@
           or type go back to the <router-link class="text-teal-dark self-center" to="/login">Login Page</router-link>
         </div>
 
-        <div v-if="success">
+        <div v-if="successful" class="text-green-dark">
           An account verification email has been sent to your email address. You will need to verify your account before you can login.
         </div>
         
@@ -46,13 +45,13 @@ import datastore from '../services/datastore';
 import helpers from '../utils/helpers';
 
 export default {
-  name: 'Login',
+  name: 'CreateAccount',
   data() {
     return {
       user: {},
       error: null,
       showPasswordRecovery: false,
-      success:false
+      successful: null
     }
   },
   methods: {
@@ -76,21 +75,41 @@ export default {
         this.error = 'Password doesn\'t match';
         return;
       }
-
-      datastore.signup(this.user).then(isSuccess => {
-        this.error = false;
-        this.showPasswordRecovery = false;
-        this.success = true;
-        datastore.sendEmailVerification(this.user.email)
-          .then(success => console.log(success))
-          .catch(error => console.log(error));
-        setTimeout(() => this.$router.push('/login'), 1000 * 10);
-      }).catch(error => {
-        this.error = error.message;
-        if (error.code === 'auth/email-already-in-use') {
-          this.showPasswordRecovery = true
-        }
-      });
+      
+      datastore.signup(this.user)
+        .then(isSuccess => {
+          this.error = false;
+          this.showPasswordRecovery = false;
+          this.$router.push('/create-account?new=true');
+        }).catch(error => {
+          this.error = error.message;
+          if (error.code === 'auth/email-already-in-use') {
+            this.showPasswordRecovery = true
+          }
+        });
+        
+    }
+  },
+  watch: {
+    '$route.query.new': function(val){
+      if(val){
+         this.successful = true;
+         datastore.sendEmailVerification(this.user.email)
+            .then(success => {
+              setTimeout(() => this.$router.push('/login'), 1000 * 10)
+            })
+            .catch(error => console.log(error));
+      }
+    }
+  },
+  mounted() {
+    if(this.$route.query.new) {
+      this.successful = true;
+      datastore.sendEmailVerification(this.user.email)
+        .then(success => {
+          setTimeout(() => this.$router.push('/login'), 1000 * 10)
+        })
+        .catch(error => console.log(error));
     }
   }
 };

@@ -12,16 +12,16 @@
       </div>
       
     </template>
-    <div class="flex flex-col ml-3">
+    <div class="flex flex-col ml-3 mt-4">
 
-      <div class="flex my-8" v-if="contact.phoneNumbers.length">
+      <div class="flex mb-8" v-if="contact.phoneNumbers.length">
           <div class="w-12">
           <Icon name="phone" flip="horizontal" class="text-grey-dark"/>
         </div>
         <ul class="list-reset">
           <li  v-for="(n, index) in contact.phoneNumbers" :key="index" class="pb-3">
             <div class="inline-block"><a :href="'tel:' + n.number">{{n.number}}</a></div> 
-            <div class="text-grey text-sm inline-block">
+            <div class="text-grey-dark text-sm inline-block">
               <Icon name="circle" class="h-1 w-1 ml-3 mr-1  mb-px "/> 
               {{n.label}}
             </div>
@@ -37,7 +37,7 @@
           <li  v-for="(n, index) in contact.emailAddresses" :key="index" class="pb-3">
             <div class="">
               <div class="inline-block"><a :href="'mailto:' + n.address">{{n.address}}</a></div> 
-              <div class="text-grey text-sm inline-block">
+              <div class="text-grey-dark text-sm inline-block">
                 <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
                 {{n.label}}
               </div>
@@ -57,7 +57,7 @@
                  <a :href="`https://www.google.com/maps/search/?api=1&query=${n.address} ${n.city}, ${n.state} ${n.zipcode}`">{{n.address}} {{n.city}}, {{n.state}} {{n.zipcode}}</a>
                 
                 </div> 
-              <div class="text-grey text-sm inline-block">
+              <div class="text-grey-dark text-sm inline-block">
                 <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
                 {{n.label}}
               </div>
@@ -75,7 +75,7 @@
             <div class="">
               <div class="inline-block">
                 {{date(contact.birthDate)}} 
-                <span class="text-grey text-sm"> <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px" />  {{ timeSince(contact.birthDate) }} y/o</span>
+                <span class="text-grey-dark text-sm"> <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px" />  {{ timeSince(contact.birthDate) }} y/o</span>
               </div>
             </div>
           </li>
@@ -90,7 +90,7 @@
           <li c v-for="(n, index) in contact.events" :key="index" class="pb-3">
             <div class="">
               <div class="inline-block">{{date(n.date)}}</div>  
-              <div class="text-grey text-sm inline-block">
+              <div class="text-grey-dark text-sm inline-block">
                 <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
                 {{n.label}}
               </div>

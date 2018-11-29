@@ -40,15 +40,15 @@ export default {
         if (groups.length === 1) {
            next(vm => {
             vm.$store.dispatch('setCurrentGroup', groups[0]);
-            return vm.$router.push(`/${groups[0]}`);
+            return vm.$router.push(`/${groups[0].slug}`);
            });
         } else if (groups.length > 1) {
           next(vm => {
             const { currentGroup } = vm.$store.state;
             vm.$store.dispatch('setAvailableGroups', groups);
 
-            if (currentGroup && groups.includes(currentGroup)) {
-              return vm.$router.push(`/${currentGroup}`);
+            if (currentGroup && groups.some(group => group.slug === currentGroup.slug)) {
+              return vm.$router.push(`/${currentGroup.slug}`);
             }else {
               return vm.$router.push(`/select-group`);
             }

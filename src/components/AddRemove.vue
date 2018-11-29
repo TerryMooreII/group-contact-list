@@ -1,5 +1,5 @@
 <template>
-   <div class="w-12 flex justify-end items-end pb-4">
+   <div class="w-12 flex justify-end items-end pb-4 add-remove">
     <button type="button" class="btn-icon" @click="remove(array, index)">
       <Icon name="times" class="delete" />
     </button>
@@ -50,7 +50,7 @@ export default {
   @apply .visible
 } 
 
-.data-row:hover + div .delete  {
+.data-row:hover + div .delete, .add-remove:hover .delete  {
   @apply .visible
 } 
 </style>
