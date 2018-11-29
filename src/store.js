@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     groups: [],
-    currentGroup: JSON.parse(localStorage.getItem('default-group'))
+    currentGroup: localStorage.getItem('default-group') ? JSON.parse(localStorage.getItem('default-group')) : {}
   },
   actions: {
     setCurrentGroup({ commit }, group) {
