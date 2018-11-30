@@ -96,10 +96,10 @@ export default {
       return moment(date).format('MMMM Do')
     },
     openEditModal(contact){
-      this.$router.push({ name: 'contactedit', query: {search: this.$route.query.search}, params: { group: this.$route.params.group, id: contact.id } } ); 
+      this.$router.push({ name: 'contactedit', query: {search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug, id: contact.id } } ); 
     },
     openViewModal(contact){
-      this.$router.push({ name: 'contactview',  query: {search: this.$route.query.search}, params: { group: this.$route.params.group, id: contact.id } } ); 
+      this.$router.push({ name: 'contactview',  query: {search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug, id: contact.id } } ); 
     },
     query(search) {
       if (!search) {
@@ -116,7 +116,7 @@ export default {
     }
   },
   mounted() {
-    datastore.getContactList(this.$route.params.group).then(contacts => { 
+    datastore.getContactList(this.$store.state.currentGroup.slug).then(contacts => { 
       Eventbus.$on('contacts', contacts => {
         this.results = contacts; //.sort(this.sort);
         this.query()

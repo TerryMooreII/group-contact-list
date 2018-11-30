@@ -122,7 +122,7 @@ export default {
       return moment().diff(date, 'years', false);
     },
     edit(){
-      this.$router.push({ name: 'contactedit', query: {search: this.$route.query.search}, params: { group: this.$route.params.group, id: this.contact.id } } ); 
+      this.$router.push({ name: 'contactedit', query: {search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug, id: this.contact.id } } ); 
     }
   }
 };
