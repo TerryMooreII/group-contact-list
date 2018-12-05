@@ -18,7 +18,8 @@ export default {
         addresses: [],
         events:[],
         phoneNumbers:[],
-        emailAddresses: []
+        emailAddresses: [],
+        relatives: []
       }
     }
   },

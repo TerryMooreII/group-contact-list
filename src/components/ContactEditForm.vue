@@ -84,19 +84,15 @@
         </ul>
       </div>
 
-      <div class="flex mb-8">
+      <div class="flex mb-8 relative">
         <div class="w-10 flex justify-center pt-2">
-          <Icon name="calendar-alt" class="text-grey-dark"/>
+          <Icon name="users" class="text-grey-dark"/>
         </div>
         <ul class="list-reset w-full">
-          <li  v-for="(n, index) in contact.events" :key="index" class="flex data-row">
-              <vue-pikaday class="input w-full"
-                v-model="n.date" 
-                :options="pikadayOptions" 
-                placeholder="Event"
-              />
-              <SuggestionBox class=" w-2/5" placeholder="Label" v-model="n.label" :suggestions="['Anniversary','Graduation', 'Divorce', 'Death', 'Other']" />
-              <AddRemove :array="contact.events" :index="index" />
+          <li  v-for="(n, index) in contact.relatives" :key="index" class="flex data-row">
+              <ContactAutocomplete class="w-3/5 mr-8" v-model="n.relative" />
+              <SuggestionBox class="w-full" placeholder="Label" v-model="n.label" :suggestions="['Husband', 'Wife', 'Child', 'Mother', 'Father', 'Grandchild']" />
+              <AddRemove :array="contact.relatives" :index="index" />
           </li>
         </ul>
       </div>
@@ -106,12 +102,15 @@
 <script>
 import moment from 'moment';
 import SuggestionBox from './SuggestionBox';
+import ContactAutocomplete from './ContactAutocomplete';
 import AddRemove from './AddRemove'
+import datastore from '../services/datastore';
 
 export default {
   name: 'ContactEditForm',
    components: {
     SuggestionBox,
+    ContactAutocomplete,
     AddRemove
   },
   props: {
@@ -147,6 +146,9 @@ export default {
       }
       if (this.contact.events.length === 0) {
         this.add(this.contact.events);
+      }
+      if (this.contact.relatives.length === 0) {
+        this.add(this.contact.relatives);
       }
     }
 };

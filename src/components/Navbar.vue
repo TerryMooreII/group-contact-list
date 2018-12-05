@@ -25,7 +25,7 @@
        
 
       <div>
-        <router-link :to="{ name: 'contactnew', query: { search: this.$route.query.search }, params: { group: this.$route.params.group } }"
+        <router-link :to="{ name: 'contactnew', query: { search: this.$route.query.search }, params: { group: this.$store.state.currentGroup.slug }}"
           class="btn-nav">
           <Icon name="plus" class="self-center h-4 w-4"/>
           <span class="ml-2 self-center hidden sm:block"> Add Contact</span>
@@ -35,7 +35,7 @@
       <div>
         <router-link 
             v-if="$store.state.groups.length > 1" 
-            :to="{ name: 'switch-account', query: { search: this.$route.query.search }, params: { group: this.$route.params.group } }"
+            :to="{ name: 'switch-account', query: { search: this.$route.query.search }, params: { group: this.$store.state.currentGroup.slug }}"
             class="btn-nav ml-2">
           <Icon name="redo" class="self-center h-4 w-4"/>
         </router-link>
@@ -66,10 +66,10 @@ export default {
   methods: {
     clear(){
       this.search = '';
-      this.$router.push(`/${this.$route.params.group}`);
+      this.$router.push(`/`);
     },
     go () {
-      this.$router.push(`/${this.$route.params.group}/?search=${this.search}`);
+      this.$router.push(`/${this.$store.state.currentGroup.slug}?search=${this.search}`);
     },
     toggleSearch() {
       this.isSearchShowing = !this.isSearchShowing;

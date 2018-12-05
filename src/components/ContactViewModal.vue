@@ -87,7 +87,7 @@
           <Icon name="calendar-alt" class="text-grey-dark"/>
         </div>
         <ul class="list-reset">
-          <li c v-for="(n, index) in contact.events" :key="index" class="pb-3">
+          <li v-for="(n, index) in contact.events" :key="index" class="pb-3">
             <div class="">
               <div class="inline-block">{{date(n.date)}}</div>  
               <div class="text-grey-dark text-sm inline-block">
@@ -98,6 +98,27 @@
           </li>
         </ul>
       </div>
+
+      <div class="flex mb-8" v-if="contact.relatives && contact.relatives.length">
+          <div class="w-12">
+          <Icon name="users" class="text-grey-dark"/>
+        </div>
+        <ul class="list-reset">
+          <li v-for="(n, index) in contact.relatives" :key="index" class="pb-3">
+            <div class="">
+              <router-link :to="{ name: 'contactview', params: { id: n.relative.id } }" class="inline-block" v-if="n.relative.id">{{n.relative.displayName}}</router-link>  
+              <div class="inline-block" v-if="!n.relative.id">{{n.relative}}</div>  
+              <div class="text-grey-dark text-sm inline-block">
+                <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
+                {{n.label}}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+
+
     </div>
   </Modal>
 </template>

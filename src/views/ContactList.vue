@@ -73,7 +73,7 @@ export default {
     }
   },
   methods: {
-    sort(a, b){
+    sort(a, b) {
       if (a.last < b.last)
         return -1;
       if (a.last > b.last)
@@ -119,10 +119,10 @@ export default {
     datastore.getContactList(this.$store.state.currentGroup.slug).then(contacts => { 
       Eventbus.$on('contacts', contacts => {
         this.results = contacts; //.sort(this.sort);
-        this.query()
+        this.query(this.$route.query.search);
       });
       this.results = contacts; //.sort(this.sort);
-      this.query()
+      this.query(this.$route.query.search);
     });
 
   }

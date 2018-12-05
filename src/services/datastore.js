@@ -52,17 +52,40 @@ const sanitize = (c) => {
 
 const datastore = {
 
-  getContactList: group => new Promise(resolve => groupCollection.where('group.slug', '==', group)
-    .orderBy('last', 'asc')
-    .orderBy('first', 'asc')
-    .onSnapshot((contactRef) => {
-      const contacts = [];
-      contactRef.forEach((doc) => {
-        contacts.push(toContact(doc));
+  getContactList: async (group) => {
+    let contacts = [];
+    groupCollection.where('group.slug', '==', group)
+      .orderBy('last', 'asc')
+      .orderBy('first', 'asc')
+      .onSnapshot((contactRef) => {
+        contacts = [];
+        contactRef.forEach((doc) => { 
+          contacts.push(toContact(doc));
+        });
+        Eventbus.$emit('contacts', contacts);
       });
-      Eventbus.$emit('contacts', contacts);
-      resolve(contacts);
-    })),
+    return contacts;
+  },
+
+  // getContactList: (group, sortBy) => new Promise(resolve => {
+  //   const collection = Collection.where('group.slug', '==', group)
+  //     if (sortBy){
+  //       collection.orderBy('last', 'asc').orderBy('first', 'asc')
+  //     }else {
+  //       collection.orderBy('birthDate', 'asc')
+  //     }
+      
+  //     collection.onSnapshot((contactRef) => {
+  //       const contacts = [];
+  //       contactRef.forEach((doc) => {
+  //         contacts.push(toContact(doc));
+  //       });
+  //       Eventbus.$emit('contacts', contacts);
+  //       resolve(contacts);
+  //     }
+      
+  //   }
+  // }),
 
   getContact: id => groupCollection.doc(id).get().then(doc => toContact(doc)),
 

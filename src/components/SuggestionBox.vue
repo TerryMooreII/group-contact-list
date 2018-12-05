@@ -1,9 +1,9 @@
 <template>
-  <div :class="$attrs.class" class="relative">
-    <input type="text" class="input" :value="value" @input="$emit('input', $event.target.value)" :placeholder="$attrs.placeholder" @click.stop="() => show = true">
-    <div class="w-full absolute suggestion-box shadow-md rounded bg-white border border-grey-lighter bg-white mt-2 ml-2" v-if="show">
+  <div :class="$attrs.class">
+    <input ref="Suggestions" type="text" class="input" :value="value" @input="$emit('input', $event.target.value)" :placeholder="$attrs.placeholder" @click.stop="open">
+    <div class="w-full fixed suggestion-box shadow-md rounded bg-white border border-grey-lighter bg-white mt-2 ml-2" v-if="show" ref="list">
       <ul class="list-reset py-2">
-        <li v-for="item in filter" :key="item" @click.stop="select(item)" class="px-2 py-2 hover:bg-grey-lighter">{{item}}</li>
+        <li v-for="item in filter" :key="item" @click.stop="select(item)" class="px-2 py-2 hover:bg-grey-lighter cursor-pointer">{{item}}</li>
       </ul>
     </div>
   </div>
@@ -35,11 +35,20 @@ export default {
     }
   },
   methods: {
+    open() {
+      this.top = this.$refs.Suggestions.getBoundingClientRect().top + 12;
+      this.show = true;
+      setTimeout(() => {
+        this.$refs.list.style.top = this.top + 'px';
+        this.$refs.list.style.visibility = 'visible';
+      }, 0);
+
+    },
     select(item){
       this.$emit('input', item)
       this.close();
     },
-    close(){
+    close (){
       this.show = false;
     }
   },
@@ -54,7 +63,8 @@ export default {
 
 <style scoped lang="less">
   .suggestion-box {
-    top: 20px;
+    visibility: hidden;
+    width:200px;
     z-index: 10000;
   }
   
