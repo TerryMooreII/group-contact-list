@@ -97,10 +97,10 @@ export default {
       return moment(date).format('MMMM Do')
     },
     openEditModal(contact){
-      this.$router.push({ name: 'contactedit', query: {search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug, id: contact.id } } ); 
+      this.$router.push({ name: 'contactedit', query: this.$route.query, params: { group: this.$store.state.currentGroup.slug, id: contact.id } } ); 
     },
     openViewModal(contact){
-      this.$router.push({ name: 'contactview',  query: {search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug, id: contact.id } } ); 
+      this.$router.push({ name: 'contactview',  query: this.$route.query, params: { group: this.$store.state.currentGroup.slug, id: contact.id } } ); 
     },
     sort(sortBy) {
       const dir = this.$route.query.dir === 'asc' ? 'desc' : 'asc';

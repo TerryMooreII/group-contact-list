@@ -23,7 +23,7 @@ export default {
   },
   methods:{
     close() {
-      this.$router.push({ name: 'contactlist', query: {search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug } } ); 
+      this.$router.push({ name: 'contactlist', query: this.$route.query, params: { group: this.$store.state.currentGroup.slug } } ); 
     },
     getContact() {
       datastore.getContact(this.$route.params.id).then(contact => this.contact = contact);

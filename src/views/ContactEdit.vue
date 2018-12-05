@@ -18,7 +18,7 @@ export default {
   },
   methods:{
     close() {
-      this.$router.push({ name: 'contactlist', query: {search: this.$route.query.search} } ); 
+      this.$router.push({ name: 'contactlist', query: this.$route.query } ); 
     }
   },
   beforeCreate() {
