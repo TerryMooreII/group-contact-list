@@ -129,10 +129,11 @@ export default {
     }
   },
   watch: {
-    '$route.query': function ( query ) {
-      const { sortBy, dir } = query
+    '$route.query': function ( query, oldQuery ) {
+      const { sortBy, dir } = query;
       const search = !query.search ? query.search : query.search.toLowerCase();
-      this.query({ search, sortBy, dir });
+      if (sortBy !== oldQuery.sortBy || dir !== oldQuery.dir || search !== oldQuery.search)
+        this.query({ search, sortBy, dir });
     }
   },
   mounted() {
