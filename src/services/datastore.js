@@ -52,7 +52,7 @@ const sanitize = (c) => {
 
 const datastore = {
 
-  getContactList: async (group, sortBy, dir = 'asc') => {
+  getContactList: (group, sortBy, dir = 'asc') => new Promise((reply) => {
     let collection;
 
     if (sortBy && sortBy !== 'name') {
@@ -60,16 +60,17 @@ const datastore = {
     } else {
       collection = groupCollection.where('group.slug', '==', group).orderBy('last', dir).orderBy('first', dir);
     }
-    let contacts = [];
+
     collection.onSnapshot((contactRef) => {
-      contacts = [];
+      const contacts = [];
       contactRef.forEach((doc) => {
         contacts.push(toContact(doc));
       });
       Eventbus.$emit('contacts', contacts);
+      reply(contacts);
     });
-    return contacts;
-  },
+  }),
+
 
   getContact: id => groupCollection.doc(id).get().then(doc => toContact(doc)),
 
