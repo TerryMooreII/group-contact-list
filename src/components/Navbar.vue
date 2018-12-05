@@ -66,7 +66,7 @@ export default {
   methods: {
     clear(){
       this.search = '';
-      this.$router.push(`/`);
+      this.$router.push(`/${this.$store.state.currentGroup.slug}`);
     },
     go () {
       this.$router.push(`/${this.$store.state.currentGroup.slug}?search=${this.search}`);

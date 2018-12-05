@@ -52,40 +52,24 @@ const sanitize = (c) => {
 
 const datastore = {
 
-  getContactList: async (group) => {
+  getContactList: async (group, sortBy, dir = 'asc') => {
+    let collection;
+
+    if (sortBy && sortBy !== 'name') {
+      collection = groupCollection.where('group.slug', '==', group).orderBy(sortBy, dir);
+    } else {
+      collection = groupCollection.where('group.slug', '==', group).orderBy('last', dir).orderBy('first', dir);
+    }
     let contacts = [];
-    groupCollection.where('group.slug', '==', group)
-      .orderBy('last', 'asc')
-      .orderBy('first', 'asc')
-      .onSnapshot((contactRef) => {
-        contacts = [];
-        contactRef.forEach((doc) => { 
-          contacts.push(toContact(doc));
-        });
-        Eventbus.$emit('contacts', contacts);
+    collection.onSnapshot((contactRef) => {
+      contacts = [];
+      contactRef.forEach((doc) => {
+        contacts.push(toContact(doc));
       });
+      Eventbus.$emit('contacts', contacts);
+    });
     return contacts;
   },
-
-  // getContactList: (group, sortBy) => new Promise(resolve => {
-  //   const collection = Collection.where('group.slug', '==', group)
-  //     if (sortBy){
-  //       collection.orderBy('last', 'asc').orderBy('first', 'asc')
-  //     }else {
-  //       collection.orderBy('birthDate', 'asc')
-  //     }
-      
-  //     collection.onSnapshot((contactRef) => {
-  //       const contacts = [];
-  //       contactRef.forEach((doc) => {
-  //         contacts.push(toContact(doc));
-  //       });
-  //       Eventbus.$emit('contacts', contacts);
-  //       resolve(contacts);
-  //     }
-      
-  //   }
-  // }),
 
   getContact: id => groupCollection.doc(id).get().then(doc => toContact(doc)),
 

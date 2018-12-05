@@ -1,8 +1,11 @@
 <template>
   <div class="flex flex-col w-full m-0 sm:m-3 p-3 bg-white rounded shadow">
      <div class="flex flex-row py-4 px-4 text-sm font-medium md:sticky pin-nav bg-white z-auto sm:z-10">
-      <div class="w-full md:w-full mr-6">
-        Name 
+      <div class="w-full md:w-full mr-6 hover:underline cursor-pointer flex items-center">
+        <div class="inline-flex items-center" @click="sort('name')">
+          <span class="hover:underline cursor-pointer">Name</span> 
+          <SortIcon :query="$route.query" sortBy="name" />
+        </div> 
       </div>
       <div class="hidden md:block md:w-2/5 truncate mr-6">
         Phone Number
@@ -13,8 +16,11 @@
       <div class="hidden lg:block w-full truncate mr-6">
         Address
       </div>
-      <div class="hidden xl:block w-2/5 truncate mr-6">
-        Birthday
+      <div class="hidden xl:block w-2/5 truncate mr-6 ">
+        <div class="inline-flex items-center"  @click="sort('birthDate')">
+          <span class="hover:underline cursor-pointer">Birthday</span>
+          <SortIcon :query="$route.query" sortBy="birthDate" />
+        </div> 
       </div>
       <div class="w-1/5">
         &nbsp;
@@ -56,6 +62,7 @@ import Eventbus from '../services/eventbus';
 import ProfilePic from '../components/ProfilePic';
 import ContactViewModal from '../components/ContactViewModal';
 import ContactEditModal from '../components/ContactEditModal';
+import SortIcon from '../components/SortIcon';
 
 
 export default {
@@ -63,6 +70,7 @@ export default {
   components: {
     ContactViewModal,
     ContactEditModal,
+    SortIcon,
     ProfilePic
   },
   data() {
@@ -73,13 +81,6 @@ export default {
     }
   },
   methods: {
-    sort(a, b) {
-      if (a.last < b.last)
-        return -1;
-      if (a.last > b.last)
-        return 1;
-      return 0;
-    },
     primary(array){
       const primary = array.find(item => item.primary);
       return primary ? primary : {};
@@ -101,38 +102,44 @@ export default {
     openViewModal(contact){
       this.$router.push({ name: 'contactview',  query: {search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug, id: contact.id } } ); 
     },
-    query(search) {
+    sort(sortBy) {
+      const dir = this.$route.query.dir === 'asc' ? 'desc' : 'asc';
+      const query = Object.assign({}, this.$route.query, { sortBy, dir });
+      this.$router.push({ 
+        name: 'contactlist', 
+        query: { search: this.$route.query.search}, params: { group: this.$store.state.currentGroup.slug }, query } ); 
+    },
+    filter(search) {
       if (!search) {
         this.contacts = this.results;
         return;
       }  
       this.contacts = this.results.filter(contact => contact.first.toLowerCase().includes(search) || contact.last.toLowerCase().includes(search));
+    },
+    query({ search, sortBy, dir }) {
+      datastore.getContactList(this.$store.state.currentGroup.slug, sortBy, dir)
+        .then(contacts => { 
+          Eventbus.$on('contacts', contacts => {
+            this.results = contacts; 
+            this.filter(search);
+          });
+          this.results = contacts;
+          this.filter(search);
+        });
     }
   },
   watch: {
-    '$route.query.search': function (val) {
-      const search = !val ? val : val.toLowerCase();
-      this.query(search);
+    '$route.query': function ( query ) {
+      const { sortBy, dir } = query
+      const search = !query.search ? query.search : query.search.toLowerCase();
+      this.query({ search, sortBy, dir });
     }
   },
   mounted() {
-    datastore.getContactList(this.$store.state.currentGroup.slug).then(contacts => { 
-      Eventbus.$on('contacts', contacts => {
-        this.results = contacts; //.sort(this.sort);
-        this.query(this.$route.query.search);
-      });
-      this.results = contacts; //.sort(this.sort);
-      this.query(this.$route.query.search);
-    });
-
+    this.query(this.$route.query);
   }
 };
 </script>
-
-<style lang="less" scoped>
-
-</style>
-
 
 <style lang="postcss" scoped>
 .row {
