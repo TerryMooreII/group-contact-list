@@ -106,7 +106,7 @@
         <ul class="list-reset">
           <li v-for="(n, index) in contact.relatives" :key="index" class="pb-3">
             <div class="">
-              <router-link :to="{ name: 'contactview', params: { id: n.relative.id } }" class="inline-block" v-if="n.relative.id">{{n.relative.displayName}}</router-link>  
+              <router-link :to="{ name: 'contactview', params: { id: n.relative.id }, query: $route.query }" class="inline-block" v-if="n.relative.id">{{n.relative.displayName}}</router-link>  
               <div class="inline-block" v-if="!n.relative.id">{{n.relative}}</div>  
               <div class="text-grey-dark text-sm inline-block">
                 <Icon name="circle" class="h-1 w-1 ml-3 mr-1 mb-px"/> 
